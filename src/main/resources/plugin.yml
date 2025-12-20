@@ -1,0 +1,14 @@
+name: BDcpvper
+version: 1.0
+main: com.zymekoh.bdcPvper.Main
+api-version: 1.21
+author: Zymekoh
+description: Plugin que permite a jugadores Bedrock usar cristales y respawn anchors sin delay
+depend: [floodgate]
+
+commands: {}
+
+permissions:
+  bdcpvper.use:
+    description: Permite usar las funcionalidades del plugin
+    default: true

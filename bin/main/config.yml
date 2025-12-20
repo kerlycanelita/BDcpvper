@@ -1,0 +1,60 @@
+# Configuración de BDcpvper
+# Plugin para jugadores Bedrock en servidores PvP
+
+# ============================================
+# CONFIGURACIÓN GENERAL
+# ============================================
+
+# Habilitar o deshabilitar el plugin completamente
+enabled: true
+
+# Mostrar mensajes de debug en la consola
+debug: false
+
+# ============================================
+# CONFIGURACIÓN DE CRISTALES DEL END
+# ============================================
+
+crystals:
+  # Permitir colocación instantánea de cristales
+  instant-place: true
+  
+  # Permitir destrucción instantánea de cristales
+  instant-break: true
+  
+  # Crear explosión al romper cristal
+  explosion: true
+  
+  # Potencia de la explosión (6.0 es el valor por defecto)
+  explosion-power: 6.0
+  
+  # La explosión rompe bloques
+  explosion-breaks-blocks: false
+  
+  # La explosión causa fuego
+  explosion-causes-fire: false
+
+# ============================================
+# CONFIGURACIÓN DE RESPAWN ANCHORS
+# ============================================
+
+anchors:
+  # Permitir colocación instantánea de anchors
+  instant-place: true
+  
+  # Permitir destrucción instantánea de anchors
+  instant-break: true
+  
+  # Dropear el item al romperlo
+  drop-item: true
+
+# ============================================
+# CONFIGURACIÓN DE MENSAJES
+# ============================================
+
+messages:
+  # Mensaje cuando el plugin se activa (vacío para desactivar)
+  plugin-enabled: "&a[BDcpvper] &7Plugin activado para jugadores Bedrock"
+  
+  # Mensaje cuando Floodgate no está instalado
+  no-floodgate: "&c[BDcpvper] &7Floodgate no encontrado. El plugin está desactivado."
