@@ -1,75 +1,45 @@
-```markdown
-# BDcpvper Plugin
+BDcpvper Plugin
 
-Plugin para PaperMC 1.21+ que permite a jugadores Bedrock usar Cristales del End y Respawn Anchors sin delay.
+Plugin para PaperMC 1.21+ que permite a jugadores Bedrock usar End Crystals y Respawn Anchors sin delay, manteniendo el comportamiento normal para jugadores Java.
 
-## 🎮 Funcionalidad
-
-- Detecta jugadores Bedrock vía Floodgate
-- Cristales del End: colocación y destrucción instantánea
+Características
+- Detecta jugadores Bedrock mediante Floodgate
+- End Crystals: colocación y destrucción instantánea
 - Respawn Anchors: colocación, destrucción y drop sin delay
-- Solo afecta a jugadores Bedrock; Java mantiene su comportamiento
+- Solo afecta a Bedrock; Java no se ve alterado
 
-## 📋 Requisitos
-
+Requisitos
 - Java 21+
 - PaperMC 1.21.1+ (compatible con Spigot)
-- Geyser + Floodgate instalados
+- Geyser y Floodgate instalados
 
-## 🔧 Instalación
+Instalación
+Opción 1: Descargar Release
+1. Descarga el archivo .jar desde la sección Releases del repositorio
+2. Copia el archivo en la carpeta plugins
+3. Reinicia el servidor
 
-1. Instala Geyser y Floodgate
-2. Compila:
-   ```bash
-   ./gradlew build
-   ```
-3. Copia `build/libs/BDcpvper-1.0.jar` a `plugins/`
-4. Reinicia el servidor
-
-## 📦 Descargas
-
-- [Geyser](https://geysermc.org/download)
-- [Floodgate](https://geysermc.org/download)
-
-## 🛠️ Compilación
-
-```bash
-# Windows
+Opción 2: Compilar manualmente
+Windows:
 gradlew.bat build
 
-# Linux/Mac
+Linux / macOS:
 ./gradlew build
-```
 
-## 🔍 Verificación
+Luego copia build/libs/BDcpvper-1.0.jar a la carpeta plugins y reinicia el servidor
 
-Al activarse correctamente, verás en consola:
+Dependencias
+- https://geysermc.org/download
 
-```
+Verificación
+Al iniciar el servidor, la consola mostrará:
 [BDcpvper] BDcpvper activado correctamente!
 [BDcpvper] Jugadores Bedrock pueden usar:
-[BDcpvper] - Cristales del End sin delay
+[BDcpvper] - End Crystals sin delay
 [BDcpvper] - Respawn Anchors sin delay
-```
 
-Si Floodgate no está instalado:
+Autor
+Zymekoh
 
-```
-[BDcpvper] FLOODGATE NO ENCONTRADO!
-[BDcpvper] Este plugin requiere Floodgate para funcionar
-```
-
-## 🐛 Problemas comunes
-
-- Verifica que Floodgate y Geyser estén instalados y funcionando
-- Usa Paper/Spigot 1.21.1+
-- Revisa los logs si el plugin no se activa
-
-## 👤 Autor
-
-Creado por **Zymekoh**
-
-## 🤝 Contribuciones
-
-¡Bienvenidas! Puedes abrir issues o pull requests.
-```
+Contribuciones
+Se aceptan issues y pull requests
