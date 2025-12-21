@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "com.zymekoh"
-version = "1.0"
+version = "1.1-ULTRA-FAST"
 
 repositories {
     mavenCentral()
@@ -54,4 +54,6 @@ tasks.build {
 
 tasks.withType<JavaCompile> {
     options.encoding = "UTF-8"
+    options.compilerArgs.add("-Xlint:unchecked")
+    options.compilerArgs.add("-Xlint:deprecation")
 }

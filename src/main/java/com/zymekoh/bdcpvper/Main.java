@@ -18,14 +18,16 @@ public class Main extends JavaPlugin {
         }
         
         // Registrar listeners
+        getServer().getPluginManager().registerEvents(new PlayerConnectionListener(this), this);
         getServer().getPluginManager().registerEvents(new CrystalListener(this), this);
         getServer().getPluginManager().registerEvents(new AnchorListener(this), this);
         
         getLogger().info("============================================");
         getLogger().info("BDcpvper activado correctamente!");
-        getLogger().info("Jugadores Bedrock pueden usar:");
-        getLogger().info("- Cristales del End sin delay");
-        getLogger().info("- Respawn Anchors sin delay");
+        getLogger().info("Jugadores Bedrock detectados:");
+        getLogger().info("- Cristales del End: ULTRA RAPIDOS");
+        getLogger().info("- Respawn Anchors: ULTRA RAPIDOS");
+        getLogger().info("- Velocidad de colocacion: MAXIMIZADA");
         getLogger().info("============================================");
     }
 

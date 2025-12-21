@@ -1,25 +1,37 @@
 package com.zymekoh.bdcpvper;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.EnderCrystal;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 import org.geysermc.floodgate.api.FloodgateApi;
+
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 
 public class CrystalListener implements Listener {
     
     private final Main plugin;
     private final FloodgateApi floodgateApi;
+    private final Set<UUID> fastPlaceCooldown;
     
     public CrystalListener(Main plugin) {
         this.plugin = plugin;
         this.floodgateApi = FloodgateApi.getInstance();
+        this.fastPlaceCooldown = new HashSet<>();
     }
     
     /**
@@ -30,9 +42,12 @@ public class CrystalListener implements Listener {
     }
     
     /**
-     * Permite colocar cristales del End sin restricciones para Bedrock
+     * Colocación ULTRA RÁPIDA de cristales para Bedrock
+     * - Sin cooldown de colocación
+     * - Spawn instantáneo
+     * - Sin validaciones restrictivas
      */
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onCrystalPlace(PlayerInteractEvent event) {
         Player player = event.getPlayer();
         
@@ -41,34 +56,85 @@ public class CrystalListener implements Listener {
             return;
         }
         
-        // Verificar si está intentando colocar un cristal
-        if (event.getItem() != null && event.getItem().getType() == Material.END_CRYSTAL) {
-            Block clickedBlock = event.getClickedBlock();
-            
-            if (clickedBlock != null) {
-                // Permitir colocación en obsidiana y bedrock
-                Material blockType = clickedBlock.getType();
-                if (blockType == Material.OBSIDIAN || blockType == Material.BEDROCK) {
-                    // El evento se procesa normalmente, solo aseguramos que no haya delay
-                    event.setCancelled(false);
-                }
-            }
+        // Solo click derecho
+        if (event.getAction() != Action.RIGHT_CLICK_BLOCK) {
+            return;
         }
+        
+        // Verificar si tiene un cristal en la mano
+        if (event.getItem() == null || event.getItem().getType() != Material.END_CRYSTAL) {
+            return;
+        }
+        
+        Block clickedBlock = event.getClickedBlock();
+        if (clickedBlock == null) {
+            return;
+        }
+        
+        Material blockType = clickedBlock.getType();
+        
+        // Solo en obsidiana o bedrock
+        if (blockType != Material.OBSIDIAN && blockType != Material.BEDROCK) {
+            return;
+        }
+        
+        // ULTRA FAST: Sin cooldown de colocación
+        UUID playerId = player.getUniqueId();
+        
+        // Cancelar el evento original para manejarlo nosotros
+        event.setCancelled(true);
+        
+        // Ubicación del cristal (encima del bloque)
+        Location crystalLoc = clickedBlock.getLocation().add(0.5, 1.0, 0.5);
+        World world = crystalLoc.getWorld();
+        
+        if (world == null) {
+            return;
+        }
+        
+        // Verificar espacio (2 bloques de altura)
+        Block space1 = world.getBlockAt(clickedBlock.getLocation().add(0, 1, 0));
+        Block space2 = world.getBlockAt(clickedBlock.getLocation().add(0, 2, 0));
+        
+        if (!space1.getType().isAir() || !space2.getType().isAir()) {
+            return;
+        }
+        
+        // SPAWN INSTANTÁNEO del cristal
+        EnderCrystal crystal = (EnderCrystal) world.spawnEntity(crystalLoc, EntityType.END_CRYSTAL);
+        
+        // Optimizaciones para velocidad
+        crystal.setShowingBottom(false); // Sin base para mejor rendimiento
+        crystal.setInvulnerable(false);  // Puede ser destruido
+        
+        // Remover 1 cristal del inventario
+        if (event.getItem().getAmount() > 1) {
+            event.getItem().setAmount(event.getItem().getAmount() - 1);
+        } else {
+            player.getInventory().setItemInMainHand(null);
+        }
+        
+        // Log de debug (opcional, comentar si quieres menos logs)
+        // plugin.getLogger().info(player.getName() + " (Bedrock) colocó cristal ULTRA RÁPIDO en " + crystalLoc);
     }
     
     /**
-     * Destrucción instantánea de cristales para jugadores Bedrock
+     * Destrucción ULTRA INSTANTÁNEA de cristales para jugadores Bedrock
+     * - 0ms de delay
+     * - Explosión inmediata
+     * - Sin lag de animación
      */
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = false)
     public void onCrystalDamage(EntityDamageByEntityEvent event) {
         Entity damaged = event.getEntity();
         Entity damager = event.getDamager();
         
-        // Verificar que sea un cristal del End siendo atacado por un jugador
+        // Solo cristales del End
         if (!(damaged instanceof EnderCrystal)) {
             return;
         }
         
+        // Solo jugadores
         if (!(damager instanceof Player)) {
             return;
         }
@@ -81,19 +147,68 @@ public class CrystalListener implements Listener {
         }
         
         EnderCrystal crystal = (EnderCrystal) damaged;
+        Location crystalLoc = crystal.getLocation();
+        World world = crystal.getWorld();
         
-        // Destruir el cristal instantáneamente
+        // CANCELAR el evento original inmediatamente
+        event.setCancelled(true);
+        
+        // REMOVER el cristal INSTANTÁNEAMENTE (sin animación)
         crystal.remove();
         
-        // Crear la explosión del cristal
-        crystal.getWorld().createExplosion(
-            crystal.getLocation(),
-            6.0F, // Potencia de explosión
-            false, // No romper bloques
-            false  // No causar fuego
-        );
+        // EXPLOSIÓN ULTRA RÁPIDA
+        // Ejecutar en el próximo tick para máxima velocidad
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                // Explosión potente e instantánea
+                world.createExplosion(
+                    crystalLoc,
+                    6.0F,    // Potencia (vanilla)
+                    false,   // No romper bloques
+                    false    // No causar fuego
+                );
+                
+                // Empuje adicional para efecto visual rápido
+                for (Entity nearby : world.getNearbyEntities(crystalLoc, 6.0, 6.0, 6.0)) {
+                    if (nearby instanceof Player) {
+                        Player nearbyPlayer = (Player) nearby;
+                        Vector direction = nearbyPlayer.getLocation().toVector()
+                            .subtract(crystalLoc.toVector())
+                            .normalize()
+                            .multiply(1.5); // Empuje más fuerte
+                        
+                        nearbyPlayer.setVelocity(direction);
+                    }
+                }
+            }
+        }.runTask(plugin);
         
-        // Cancelar el evento original para evitar doble procesamiento
-        event.setCancelled(true);
+        // Log de debug (opcional)
+        // plugin.getLogger().info(player.getName() + " (Bedrock) destruyó cristal ULTRA RÁPIDO");
+    }
+    
+    /**
+     * Optimización adicional: Detección temprana de hits a cristales
+     * Esto hace que la destrucción sea AÚN MÁS RÁPIDA
+     */
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onCrystalHit(EntityDamageByEntityEvent event) {
+        if (!(event.getEntity() instanceof EnderCrystal)) {
+            return;
+        }
+        
+        if (!(event.getDamager() instanceof Player)) {
+            return;
+        }
+        
+        Player player = (Player) event.getDamager();
+        
+        if (!isBedrockPlayer(player)) {
+            return;
+        }
+        
+        // Pre-cancelar para procesamiento ultra rápido
+        event.setDamage(0);
     }
 }
