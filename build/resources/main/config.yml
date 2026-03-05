@@ -1,99 +1,44 @@
 # ============================================
-# BDcpvper - Configuración
-# Plugin de Crystal PvP para jugadores Bedrock
+# BDcpvper - Configuration
 # ============================================
 
-# ============================================
-# CONFIGURACIÓN DE LOGS
-# ============================================
 logs:
-  # Mostrar en consola cuando un jugador Bedrock se conecta
+  # Log to console when a Bedrock player joins
   player-join: true
-  
-  # Mostrar en consola cuando se coloca/rompe un cristal (debug)
+
+  # Log End Crystal actions
   crystal-actions: false
-  
-  # Mostrar en consola cuando se coloca/rompe un anchor (debug)
+
+  # Log Respawn Anchor actions
   anchor-actions: false
 
-# ============================================
-# CONFIGURACIÓN DE MENSAJES AL JUGADOR
-# ============================================
 messages:
-  # Enviar mensaje de bienvenida a jugadores Bedrock
+  # Send a welcome message to Bedrock players
   welcome-message: true
-  
-  # Texto del mensaje de bienvenida
-  welcome-text:
-    - "&a&l[BDcpvper] &7¡Bienvenido jugador de Bedrock!"
-    - "&a&l[BDcpvper] &7Crystal PvP optimizado: &e&lULTRA RAPIDO"
 
-# ============================================
-# CRISTALES DEL END - CONFIGURACIÓN
-# ============================================
+  # Messages sent on join
+  welcome-text:
+    - "&a&l[BDcpvper] &7Welcome Bedrock player"
+    - "&a&l[BDcpvper] &7Crystal PvP optimized for your client"
+
 crystals:
-  # Habilitar colocación ultra rápida
   ultra-fast-place: true
-  
-  # Habilitar destrucción ultra rápida
   ultra-fast-break: true
-  
-  # Crear explosión al romper
+
+  # Explosion when a crystal is broken
   explosion-enabled: true
-  
-  # Potencia de la explosión (6.0 = vanilla, puedes aumentar)
   explosion-power: 6.0
-  
-  # La explosión rompe bloques
   explosion-breaks-blocks: false
-  
-  # La explosión causa fuego
   explosion-causes-fire: false
-  
-  # Multiplicador de empuje (1.5 = más fuerte que vanilla)
-  knockback-multiplier: 1.5
-  
-  # Mostrar base del cristal (false = mejor rendimiento)
+
+  # End Crystal visual option
   show-crystal-base: false
 
-# ============================================
-# RESPAWN ANCHORS - CONFIGURACIÓN
-# ============================================
 anchors:
-  # Habilitar colocación ultra rápida
   ultra-fast-place: true
-  
-  # Habilitar destrucción ultra rápida
   ultra-fast-break: true
-  
-  # Dropear el item al romperlo
+
+  # Drops/exp when breaking anchor in survival
   drop-item: true
-  
-  # Dar experiencia al romperlo (como vanilla)
   give-experience: true
-  
-  # Cantidad de experiencia
   experience-amount: 3
-
-# ============================================
-# OPTIMIZACIONES AVANZADAS
-# ============================================
-performance:
-  # Usar procesamiento asíncrono cuando sea posible
-  async-processing: false
-  
-  # Delay en ticks para explosiones (0 = instantáneo)
-  explosion-delay-ticks: 0
-  
-  # Pre-cancelar eventos para máxima velocidad
-  pre-cancel-events: true
-
-# ============================================
-# NO MODIFICAR A MENOS QUE SEPAS LO QUE HACES
-# ============================================
-advanced:
-  # Prioridad de eventos (LOWEST = máxima velocidad)
-  event-priority: LOWEST
-  
-  # Verificar conflictos con otros plugins
-  check-plugin-conflicts: true
